@@ -542,3 +542,324 @@ class MatrixAnimation(Scene):
         )
 
         self.wait(1)
+
+        # =====================================
+        # SCENE 4: WORKED EXAMPLES
+        # =====================================
+
+        # -------------------------------------
+        # EXAMPLE 1: MATRIX ADDITION
+        # -------------------------------------
+
+        heading4a = Text(
+            "Worked Example 1: Matrix Addition",
+            font_size=32,
+            color=YELLOW
+        )
+        heading4a.to_edge(UP)
+
+        self.play(Write(heading4a))
+
+        add_A = Matrix([[1, 2], [3, 4]])
+        add_B = Matrix([[5, 6], [7, 8]])
+        add_R = Matrix([[6, 8], [10, 12]])
+
+        add_A.scale(0.9)
+        add_B.scale(0.9)
+        add_R.scale(0.9)
+
+        add_plus = MathTex("+")
+        add_equals = MathTex("=")
+
+        # Put everything in one row
+        add_row = VGroup(add_A, add_plus, add_B, add_equals, add_R)
+        add_row.arrange(RIGHT, buff=0.45)
+        add_row.move_to(UP * 0.6)
+
+        add_label_A = MathTex("A").next_to(add_A, UP, buff=0.3)
+        add_label_B = MathTex("B").next_to(add_B, UP, buff=0.3)
+        add_label_R = MathTex("A + B").next_to(add_R, UP, buff=0.3)
+        add_labels = VGroup(add_label_A, add_label_B, add_label_R)
+
+        # Show A, B and only the empty brackets of the answer
+        self.play(
+            FadeIn(add_A),
+            FadeIn(add_plus),
+            FadeIn(add_B),
+            FadeIn(add_equals),
+            FadeIn(add_R.get_brackets()),
+            FadeIn(add_labels)
+        )
+
+        self.wait(1)
+
+        add_calcs = [
+            r"1 + 5 = 6",
+            r"2 + 6 = 8",
+            r"3 + 7 = 10",
+            r"4 + 8 = 12"
+        ]
+
+        for k in range(4):
+
+            hl_A = SurroundingRectangle(
+                add_A.get_entries()[k],
+                color=RED,
+                buff=0.12
+            )
+            hl_B = SurroundingRectangle(
+                add_B.get_entries()[k],
+                color=RED,
+                buff=0.12
+            )
+
+            calc = MathTex(add_calcs[k], color=YELLOW)
+            calc.scale(1.2)
+            calc.move_to(DOWN * 1.8)
+
+            result_entry = add_R.get_entries()[k]
+            result_entry.set_color(GREEN)
+
+            self.play(Create(hl_A), Create(hl_B))
+            self.play(Write(calc))
+            self.play(Write(result_entry))
+            self.wait(1)
+            self.play(
+                FadeOut(hl_A),
+                FadeOut(hl_B),
+                FadeOut(calc)
+            )
+
+        add_note = Text(
+            "Addition needs matrices of the same dimensions",
+            font_size=24,
+            color=GREEN
+        )
+        add_note.to_edge(DOWN)
+
+        self.play(Write(add_note))
+        self.wait(2)
+
+        # Clear Example 1
+        self.play(
+            FadeOut(heading4a),
+            FadeOut(add_row),
+            FadeOut(add_labels),
+            FadeOut(add_note)
+        )
+
+        # -------------------------------------
+        # EXAMPLE 2: SCALAR MULTIPLICATION
+        # -------------------------------------
+
+        heading4b = Text(
+            "Worked Example 2: Scalar Multiplication",
+            font_size=32,
+            color=YELLOW
+        )
+        heading4b.to_edge(UP)
+
+        self.play(Write(heading4b))
+
+        sc_two = MathTex("2")
+        sc_two.scale(1.3)
+
+        sc_A = Matrix([[1, 2], [3, 4]])
+        sc_R = Matrix([[2, 4], [6, 8]])
+
+        sc_A.scale(0.9)
+        sc_R.scale(0.9)
+
+        sc_equals = MathTex("=")
+
+        sc_row = VGroup(sc_two, sc_A, sc_equals, sc_R)
+        sc_row.arrange(RIGHT, buff=0.5)
+        sc_row.move_to(UP * 0.6)
+
+        sc_label_A = MathTex("A").next_to(sc_A, UP, buff=0.3)
+        sc_label_R = MathTex("2A").next_to(sc_R, UP, buff=0.3)
+        sc_labels = VGroup(sc_label_A, sc_label_R)
+
+        self.play(
+            FadeIn(sc_two),
+            FadeIn(sc_A),
+            FadeIn(sc_equals),
+            FadeIn(sc_R.get_brackets()),
+            FadeIn(sc_labels)
+        )
+
+        # Blue box on the scalar: the same number is used every time
+        sc_two_box = SurroundingRectangle(
+            sc_two,
+            color=BLUE,
+            buff=0.15
+        )
+        self.play(Create(sc_two_box))
+        self.wait(1)
+
+        sc_calcs = [
+            r"2 \times 1 = 2",
+            r"2 \times 2 = 4",
+            r"2 \times 3 = 6",
+            r"2 \times 4 = 8"
+        ]
+
+        for k in range(4):
+
+            hl = SurroundingRectangle(
+                sc_A.get_entries()[k],
+                color=RED,
+                buff=0.12
+            )
+
+            calc = MathTex(sc_calcs[k], color=YELLOW)
+            calc.scale(1.2)
+            calc.move_to(DOWN * 1.8)
+
+            result_entry = sc_R.get_entries()[k]
+            result_entry.set_color(GREEN)
+
+            self.play(Create(hl))
+            self.play(Write(calc))
+            self.play(Write(result_entry))
+            self.wait(1)
+            self.play(
+                FadeOut(hl),
+                FadeOut(calc)
+            )
+
+        sc_note = Text(
+            "The scalar 2 multiplies every entry",
+            font_size=24,
+            color=GREEN
+        )
+        sc_note.to_edge(DOWN)
+
+        self.play(Write(sc_note))
+        self.wait(2)
+
+        # Clear Example 2
+        self.play(
+            FadeOut(heading4b),
+            FadeOut(sc_row),
+            FadeOut(sc_labels),
+            FadeOut(sc_two_box),
+            FadeOut(sc_note)
+        )
+
+        # -------------------------------------
+        # EXAMPLE 3: MATRIX MULTIPLICATION
+        # -------------------------------------
+
+        heading4c = Text(
+            "Worked Example 3: Matrix Multiplication",
+            font_size=32,
+            color=YELLOW
+        )
+        heading4c.to_edge(UP)
+
+        self.play(Write(heading4c))
+
+        mu_A = Matrix([[1, 2], [3, 4]])
+        mu_B = Matrix([[5, 6], [7, 8]])
+        mu_R = Matrix([[19, 22], [43, 50]])
+
+        mu_A.scale(0.9)
+        mu_B.scale(0.9)
+        mu_R.scale(0.9)
+
+        mu_times = MathTex(r"\times")
+        mu_equals = MathTex("=")
+
+        mu_row = VGroup(mu_A, mu_times, mu_B, mu_equals, mu_R)
+        mu_row.arrange(RIGHT, buff=0.45)
+        mu_row.move_to(UP * 0.6)
+
+        mu_label_A = MathTex("A").next_to(mu_A, UP, buff=0.3)
+        mu_label_B = MathTex("B").next_to(mu_B, UP, buff=0.3)
+        mu_label_R = MathTex("AB").next_to(mu_R, UP, buff=0.3)
+        mu_labels = VGroup(mu_label_A, mu_label_B, mu_label_R)
+
+        self.play(
+            FadeIn(mu_A),
+            FadeIn(mu_times),
+            FadeIn(mu_B),
+            FadeIn(mu_equals),
+            FadeIn(mu_R.get_brackets()),
+            FadeIn(mu_labels)
+        )
+
+        self.wait(1)
+
+        mu_calcs = [
+            r"1 \times 5 + 2 \times 7 = 19",
+            r"1 \times 6 + 2 \times 8 = 22",
+            r"3 \times 5 + 4 \times 7 = 43",
+            r"3 \times 6 + 4 \times 8 = 50"
+        ]
+
+        ent_A = mu_A.get_entries()
+        ent_B = mu_B.get_entries()
+
+        for k in range(4):
+
+            r = k // 2   # which row of A
+            c = k % 2    # which column of B
+
+            row_hl = SurroundingRectangle(
+                VGroup(ent_A[2 * r], ent_A[2 * r + 1]),
+                color=RED,
+                buff=0.12
+            )
+
+            col_hl = SurroundingRectangle(
+                VGroup(ent_B[c], ent_B[c + 2]),
+                color=BLUE,
+                buff=0.12
+            )
+
+            calc = MathTex(mu_calcs[k], color=YELLOW)
+            calc.scale(1.1)
+            calc.move_to(DOWN * 1.8)
+
+            result_entry = mu_R.get_entries()[k]
+            result_entry.set_color(GREEN)
+
+            self.play(Create(row_hl), Create(col_hl))
+            self.play(Write(calc))
+            self.play(Write(result_entry))
+            self.wait(1.5)
+            self.play(
+                FadeOut(row_hl),
+                FadeOut(col_hl),
+                FadeOut(calc)
+            )
+
+        # Dimension rule
+        dim_rule = MathTex(
+            r"(2 \times 2)(2 \times 2) = (2 \times 2)",
+            color=YELLOW
+        )
+        dim_rule.move_to(DOWN * 1.8)
+
+        dim_note = Text(
+            "The inner numbers must match. The outer numbers give the size.",
+            font_size=24,
+            color=GREEN
+        )
+        dim_note.to_edge(DOWN)
+
+        self.play(Write(dim_rule))
+        self.play(Write(dim_note))
+        self.wait(3)
+
+        # Clear Example 3
+        self.play(
+            FadeOut(heading4c),
+            FadeOut(mu_row),
+            FadeOut(mu_labels),
+            FadeOut(dim_rule),
+            FadeOut(dim_note)
+        )
+
+        self.wait(1)
