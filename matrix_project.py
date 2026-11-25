@@ -863,3 +863,290 @@ class MatrixAnimation(Scene):
         )
 
         self.wait(1)
+
+        # =====================================
+        # SCENE 5: INTERPRETATION AND APPLICATIONS
+        # =====================================
+
+        # -------------------------------------
+        # PART 1: WHY THE INNER NUMBERS MUST MATCH
+        # -------------------------------------
+
+        heading5a = Text(
+            "Understanding Matrix Multiplication",
+            font_size=32,
+            color=YELLOW
+        )
+        heading5a.to_edge(UP)
+
+        self.play(Write(heading5a))
+
+        # A 2x3 matrix times a 3x2 matrix
+        mat_P = Matrix([[1, 2, 3], [4, 5, 6]])
+        mat_Q = Matrix([[7, 8], [9, 10], [11, 12]])
+        mat_R = Matrix([[58, 64], [139, 154]])
+
+        mat_P.scale(0.8)
+        mat_Q.scale(0.8)
+        mat_R.scale(0.8)
+
+        dim_times = MathTex(r"\times")
+        dim_equals = MathTex("=")
+
+        dim_row = VGroup(mat_P, dim_times, mat_Q, dim_equals, mat_R)
+        dim_row.arrange(RIGHT, buff=0.45)
+        dim_row.move_to(UP * 0.9)
+
+        lab_P = MathTex("P").next_to(mat_P, UP, buff=0.3)
+        lab_Q = MathTex("Q").next_to(mat_Q, UP, buff=0.3)
+        lab_R = MathTex("PQ").next_to(mat_R, UP, buff=0.3)
+        dim_labels = VGroup(lab_P, lab_Q, lab_R)
+
+        # Dimensions under each matrix
+        # Inner numbers are yellow, outer numbers are green
+        size_P = MathTex("2", r"\times", "3")
+        size_P[0].set_color(GREEN)
+        size_P[2].set_color(YELLOW)
+        size_P.next_to(mat_P, DOWN, buff=0.3)
+
+        size_Q = MathTex("3", r"\times", "2")
+        size_Q[0].set_color(YELLOW)
+        size_Q[2].set_color(GREEN)
+        size_Q.next_to(mat_Q, DOWN, buff=0.3)
+
+        size_R = MathTex("2", r"\times", "2", color=GREEN)
+        size_R.next_to(mat_R, DOWN, buff=0.3)
+
+        dim_sizes = VGroup(size_P, size_Q, size_R)
+
+        self.play(
+            FadeIn(mat_P),
+            FadeIn(dim_times),
+            FadeIn(mat_Q),
+            FadeIn(dim_equals),
+            FadeIn(mat_R.get_brackets()),
+            FadeIn(dim_labels)
+        )
+
+        self.play(Write(dim_sizes))
+        self.wait(1)
+
+        step_text1 = Text(
+            "Columns of P = rows of Q: 3 = 3. So we can multiply.",
+            font_size=26,
+            color=YELLOW
+        )
+        step_text1.to_edge(DOWN)
+
+        self.play(Write(step_text1))
+        self.wait(2)
+
+        # Row 1 of P and column 1 of Q
+        ent_P = mat_P.get_entries()
+        ent_Q = mat_Q.get_entries()
+        ent_R = mat_R.get_entries()
+
+        row_hl_p = SurroundingRectangle(
+            VGroup(ent_P[0], ent_P[1], ent_P[2]),
+            color=RED,
+            buff=0.12
+        )
+
+        col_hl_q = SurroundingRectangle(
+            VGroup(ent_Q[0], ent_Q[2], ent_Q[4]),
+            color=BLUE,
+            buff=0.12
+        )
+
+        step_text2 = Text(
+            "Row 1 has 3 numbers. Column 1 has 3 numbers. They pair up one by one.",
+            font_size=24,
+            color=YELLOW
+        )
+        step_text2.to_edge(DOWN)
+
+        self.play(
+            Create(row_hl_p),
+            Create(col_hl_q),
+            FadeOut(step_text1)
+        )
+        self.play(Write(step_text2))
+
+        big_calc = MathTex(
+            r"1 \times 7 + 2 \times 9 + 3 \times 11 = 58",
+            color=YELLOW
+        )
+        big_calc.move_to(DOWN * 1.7)
+
+        ent_R[0].set_color(GREEN)
+
+        self.play(Write(big_calc))
+        self.play(Write(ent_R[0]))
+        self.wait(2)
+
+        self.play(
+            FadeOut(row_hl_p),
+            FadeOut(col_hl_q),
+            FadeOut(big_calc),
+            FadeOut(step_text2)
+        )
+
+        # The other three entries
+        step_text3 = Text(
+            "The same steps fill in the other three entries.",
+            font_size=26,
+            color=YELLOW
+        )
+        step_text3.to_edge(DOWN)
+
+        for k in range(1, 4):
+            ent_R[k].set_color(GREEN)
+
+        self.play(Write(step_text3))
+        self.play(
+            LaggedStart(
+                *[Write(ent_R[k]) for k in range(1, 4)],
+                lag_ratio=0.6
+            )
+        )
+        self.wait(2)
+
+        # Outer numbers give the size of the answer
+        step_text4 = Text(
+            "Outer numbers: 2 and 2. They give the size of the answer.",
+            font_size=26,
+            color=GREEN
+        )
+        step_text4.to_edge(DOWN)
+
+        self.play(
+            FadeOut(step_text3),
+            Write(step_text4)
+        )
+        self.wait(3)
+
+        # Clear Part 1
+        self.play(
+            FadeOut(heading5a),
+            FadeOut(dim_row),
+            FadeOut(dim_labels),
+            FadeOut(dim_sizes),
+            FadeOut(step_text4)
+        )
+
+        # -------------------------------------
+        # PART 2: WHAT EACH OPERATION MEANS
+        # -------------------------------------
+
+        heading5b = Text(
+            "What do the operations mean?",
+            font_size=32,
+            color=YELLOW
+        )
+        heading5b.to_edge(UP)
+
+        self.play(Write(heading5b))
+
+        meaning_lines = VGroup(
+            Text(
+                "Addition: combines matching entries",
+                font_size=26,
+                t2c={"Addition": BLUE}
+            ),
+            Text(
+                "Scalar multiplication: changes every entry by the same factor",
+                font_size=26,
+                t2c={"Scalar multiplication": GREEN}
+            ),
+            Text(
+                "Matrix multiplication: combines rows with columns",
+                font_size=26,
+                t2c={"Matrix multiplication": RED}
+            )
+        )
+
+        meaning_lines.arrange(
+            DOWN,
+            aligned_edge=LEFT,
+            buff=0.7
+        )
+        meaning_lines.move_to(ORIGIN)
+
+        for line in meaning_lines:
+            self.play(Write(line))
+            self.wait(2)
+
+        self.wait(1)
+
+        self.play(
+            FadeOut(heading5b),
+            FadeOut(meaning_lines)
+        )
+
+        # -------------------------------------
+        # PART 3: REAL-LIFE APPLICATIONS
+        # -------------------------------------
+
+        heading5c = Text(
+            "Where are matrices used?",
+            font_size=32,
+            color=YELLOW
+        )
+        heading5c.to_edge(UP)
+
+        self.play(Write(heading5c))
+
+        app_data = [
+            ("Computer Graphics", "Rotate and scale\nshapes on screen", BLUE),
+            ("Image Processing", "Filters change\npixel values", GREEN),
+            ("Machine Learning", "Data and weights are\nstored as matrices", ORANGE)
+        ]
+
+        cards = VGroup()
+
+        for name, desc, col in app_data:
+
+            box = RoundedRectangle(
+                corner_radius=0.2,
+                width=3.7,
+                height=2.4,
+                color=col
+            )
+
+            card_title = Text(name, font_size=26, color=col)
+            card_desc = Text(desc, font_size=22)
+
+            card_text = VGroup(card_title, card_desc)
+            card_text.arrange(DOWN, buff=0.35)
+            card_text.move_to(box.get_center())
+
+            cards.add(VGroup(box, card_text))
+
+        cards.arrange(RIGHT, buff=0.4)
+        cards.move_to(ORIGIN)
+
+        self.play(
+            LaggedStart(
+                *[FadeIn(card) for card in cards],
+                lag_ratio=0.5
+            )
+        )
+
+        apps_note = Text(
+            "All of them use the operations you just learned.",
+            font_size=24,
+            color=GREEN
+        )
+        apps_note.to_edge(DOWN)
+
+        self.play(Write(apps_note))
+        self.wait(4)
+
+        # Clear Scene 5
+        self.play(
+            FadeOut(heading5c),
+            FadeOut(cards),
+            FadeOut(apps_note)
+        )
+
+        self.wait(1)
