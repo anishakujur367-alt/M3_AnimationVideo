@@ -1150,3 +1150,241 @@ class MatrixAnimation(Scene):
         )
 
         self.wait(1)
+
+        # =====================================
+        # SCENE 6: SUMMARY AND CREDITS
+        # (the code is in the method scene_six below)
+        # =====================================
+
+        self.scene_six()
+
+    def scene_six(self):
+
+        # -------------------------------------
+        # SCREEN 1: THREE KEY TAKEAWAYS
+        # -------------------------------------
+
+        heading6a = Text(
+            "3 Key Takeaways",
+            font_size=34,
+            color=YELLOW
+        )
+        heading6a.to_edge(UP)
+
+        self.play(Write(heading6a))
+
+        # Takeaway 1: what a matrix is, its size and its entries
+        take1 = VGroup(
+            Text(
+                "A matrix is a rectangular arrangement of numbers.",
+                font_size=24
+            ),
+            VGroup(
+                MathTex(
+                    r"\text{size} = \text{rows} \times \text{columns}",
+                    font_size=30,
+                    color=YELLOW
+                ),
+                MathTex(
+                    r"a_{ij} = \text{entry in row } i,\ \text{column } j",
+                    font_size=30,
+                    color=YELLOW
+                )
+            ).arrange(RIGHT, buff=0.8)
+        )
+        take1.arrange(DOWN, aligned_edge=LEFT, buff=0.2)
+
+        # Takeaway 2: addition and scalar multiplication
+        take2 = VGroup(
+            Text(
+                "Addition and scalar multiplication work entry by entry.",
+                font_size=24
+            ),
+            Text(
+                "Addition requires matrices of the same dimensions.",
+                font_size=24
+            )
+        )
+        take2.arrange(DOWN, aligned_edge=LEFT, buff=0.2)
+
+        # Takeaway 3: matrix multiplication and the dimension rule
+        take3 = VGroup(
+            Text(
+                "Matrix multiplication is row by column.",
+                font_size=24
+            ),
+            Text(
+                "The columns of the first matrix must equal the rows of the second:",
+                font_size=24
+            ),
+            MathTex(
+                r"(m \times n)(n \times p) = (m \times p)",
+                font_size=30,
+                color=YELLOW
+            )
+        )
+        take3.arrange(DOWN, aligned_edge=LEFT, buff=0.2)
+
+        # Stack the three takeaways on the left edge
+        takeaways = VGroup(take1, take2, take3)
+        takeaways.arrange(DOWN, aligned_edge=LEFT, buff=0.45)
+        takeaways.move_to(DOWN * 0.2 + RIGHT * 0.5)
+
+        # A numbered circle beside each takeaway
+        badge_colors = [BLUE, GREEN, ORANGE]
+        take_items = VGroup()
+
+        for n, block in enumerate([take1, take2, take3]):
+
+            circle = Circle(radius=0.28, color=badge_colors[n])
+
+            number_text = Text(
+                str(n + 1),
+                font_size=24,
+                color=badge_colors[n]
+            )
+            number_text.move_to(circle.get_center())
+
+            badge = VGroup(circle, number_text)
+            badge.next_to(block, LEFT, buff=0.4)
+            badge.align_to(block, UP)
+
+            take_items.add(VGroup(badge, block))
+
+        # Safety: shrink if the group is ever too tall or too wide
+        if take_items.height > 5.6:
+            take_items.scale_to_fit_height(5.6)
+        if take_items.width > 12.5:
+            take_items.scale_to_fit_width(12.5)
+
+        take_waits = [4.5, 3.5, 5]
+
+        for n in range(3):
+            self.play(FadeIn(take_items[n], shift=RIGHT * 0.3))
+            self.wait(take_waits[n])
+
+        self.wait(2)
+
+        self.play(
+            FadeOut(heading6a),
+            FadeOut(take_items)
+        )
+
+        # -------------------------------------
+        # SCREEN 2: CREDITS
+        # -------------------------------------
+
+        heading6b = Text(
+            "Credits",
+            font_size=34,
+            color=YELLOW
+        )
+        heading6b.to_edge(UP)
+
+        self.play(Write(heading6b))
+
+        references_lines = [
+            "No external references used.",
+            "Mathematical content was reviewed by the student."
+        ]
+
+        music_lines = [
+            "No background music used."
+        ]
+
+        ai_lines = [
+            "Claude (Anthropic) and ChatGPT (OpenAI) assisted with project planning,",
+            "mathematical explanations, Manim coding, troubleshooting, and script",
+            "preparation. The student reviewed the mathematical content and",
+            "final animations."
+        ]
+
+        credit_data = [
+            ("References", GREEN, references_lines),
+            ("Music", BLUE, music_lines),
+            ("AI Disclosure", ORANGE, ai_lines)
+        ]
+
+        credit_sections = VGroup()
+
+        for sec_title, sec_color, sec_lines in credit_data:
+
+            sec_head = Text(
+                sec_title,
+                font_size=26,
+                color=sec_color
+            )
+
+            sec_body = VGroup(
+                *[Text(line, font_size=21) for line in sec_lines]
+            )
+            sec_body.arrange(DOWN, aligned_edge=LEFT, buff=0.1)
+
+            section = VGroup(sec_head, sec_body)
+            section.arrange(DOWN, aligned_edge=LEFT, buff=0.15)
+
+            credit_sections.add(section)
+
+        credit_sections.arrange(DOWN, aligned_edge=LEFT, buff=0.35)
+        credit_sections.move_to(DOWN * 0.3)
+
+        # Safety: shrink if the credits are ever too tall or too wide
+        if credit_sections.height > 5.4:
+            credit_sections.scale_to_fit_height(5.4)
+        if credit_sections.width > 12.5:
+            credit_sections.scale_to_fit_width(12.5)
+
+        credit_waits = [2.5, 2.5, 8]
+
+        for n in range(3):
+            self.play(FadeIn(credit_sections[n], shift=UP * 0.2))
+            self.wait(credit_waits[n])
+
+        self.wait(1.5)
+
+        self.play(
+            FadeOut(heading6b),
+            FadeOut(credit_sections)
+        )
+
+        # -------------------------------------
+        # SCREEN 3: CLOSING FRAME
+        # -------------------------------------
+
+        title6 = Text(
+            "Matrices and Matrix Operations",
+            font_size=46,
+            color=BLUE
+        )
+
+        subtitle6 = Text(
+            "Thank You for Watching",
+            font_size=27
+        )
+        subtitle6.next_to(title6, DOWN, buff=0.3)
+
+        student6 = Text(
+            "Presented by: Anisha Kujur | ID: E25B070621",
+            font_size=20
+        )
+        student6.next_to(subtitle6, DOWN, buff=0.5)
+
+        self.play(Write(title6))
+        self.play(FadeIn(subtitle6))
+        self.play(FadeIn(student6))
+        self.wait(3.5)
+
+        self.play(
+            FadeOut(title6),
+            FadeOut(subtitle6),
+            FadeOut(student6)
+        )
+
+        self.wait(1)
+
+
+class Scene6Preview(MatrixAnimation):
+    """Preview helper: plays only Scene 6 so it renders in seconds."""
+
+    def construct(self):
+        self.scene_six()
